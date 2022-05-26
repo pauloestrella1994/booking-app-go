@@ -17,8 +17,10 @@ func main() {
 	var lastName string
 	var email string
 	var userTickets int
-	// ask for params
+	var bookings [50]string
+	bookings[0] = firstName + "" + lastName
 
+	// ask for params
 	fmt.Printf("Enter your first name: ")
 	fmt.Scan(&firstName) // refer a pointer to store value with &
 
