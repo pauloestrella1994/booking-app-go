@@ -13,30 +13,33 @@ func main() {
 	fmt.Printf("We have total of %v tickets and %v are still available.\n", conferenceTickets, remainingTickets)
 	fmt.Println("Get your tickets here to attend")
 
-	var firstName string
-	var lastName string
-	var email string
-	var userTickets int
-	var bookings []string
+	for {
 
-	// ask for params
-	fmt.Printf("Enter your first name: ")
-	fmt.Scan(&firstName) // refer a pointer to store value with &
+		var firstName string
+		var lastName string
+		var email string
+		var userTickets int
+		var bookings []string
 
-	fmt.Printf("Enter your last name: ")
-	fmt.Scan(&lastName)
+		// ask for params
+		fmt.Printf("Enter your first name: ")
+		fmt.Scan(&firstName) // refer a pointer to store value with &
 
-	fmt.Printf("Enter your email address: ")
-	fmt.Scan(&email)
+		fmt.Printf("Enter your last name: ")
+		fmt.Scan(&lastName)
 
-	fmt.Printf("Enter number of tickets: ")
-	fmt.Scan(&userTickets)
+		fmt.Printf("Enter your email address: ")
+		fmt.Scan(&email)
 
-	remainingTickets = remainingTickets - uint(userTickets)
-	bookings = append(bookings, firstName+" "+lastName)
+		fmt.Printf("Enter number of tickets: ")
+		fmt.Scan(&userTickets)
 
-	fmt.Printf("Thank you %v %v for booking %v tickets. You will receive a confirmation email at %v\n", firstName, lastName, userTickets, email)
-	fmt.Printf("%v tickets remaining for %v\n", remainingTickets, conferenceName)
+		remainingTickets = remainingTickets - uint(userTickets)
+		bookings = append(bookings, firstName+" "+lastName)
 
-	fmt.Printf("These are all our bookings: %v\n", bookings)
+		fmt.Printf("Thank you %v %v for booking %v tickets. You will receive a confirmation email at %v\n", firstName, lastName, userTickets, email)
+		fmt.Printf("%v tickets remaining for %v\n", remainingTickets, conferenceName)
+
+		fmt.Printf("These are all our bookings: %v\n", bookings)
+	}
 }
