@@ -36,7 +36,17 @@ func main() {
 		fmt.Printf("Enter number of tickets: ")
 		fmt.Scan(&userTickets)
 
-		if uint(userTickets) <= remainingTickets {
+		isValidName := len(firstName) >= 2 && len(lastName) >= 2
+
+		isValidEmail := strings.Contains(email, "@")
+
+		isValidTicketNumber := userTickets > 0 && uint(userTickets) <= remainingTickets
+
+		// You can use exclamation prefix to use the negative form of this variable
+		// !isValidCity is equal to city != "Singapore" && "London"
+		// isValidCity := city == "Singapore" || "London"
+
+		if isValidName && isValidEmail && isValidTicketNumber {
 			remainingTickets = remainingTickets - uint(userTickets)
 			bookings = append(bookings, firstName+" "+lastName)
 
@@ -49,15 +59,22 @@ func main() {
 				var names = strings.Fields(booking)
 				firstNames = append(firstNames, names[0])
 			}
+			if remainingTickets == 0 {
+				//end program
+				fmt.Println("Our conference is booked out. Come back next year.")
+				break
+			}
 			fmt.Printf("The first names of bookings are: %v\n", firstNames)
 		} else {
-			fmt.Printf("We only have %v tickets remaining, so you can't book %v tickets\n", remainingTickets, userTickets)
-		}
-
-		if remainingTickets == 0 {
-			//end program
-			fmt.Println("Our conference is booked out. Come back next year.")
-			break
+			if !isValidName {
+				fmt.Println("First name or last name are too short!")
+			}
+			if !isValidEmail {
+				fmt.Println("Email address you entered doesn't contain @ sign!")
+			}
+			if !isValidTicketNumber {
+				fmt.Println("Number of tickets you entered is invalid!")
+			}
 		}
 	}
 }
