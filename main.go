@@ -10,9 +10,7 @@ func main() {
 	const conferenceTickets = 50
 	var remainingTickets uint = 50 // only positive numbers
 
-	fmt.Printf("Welcome to %v booking application\n", conferenceName)
-	fmt.Printf("We have total of %v tickets and %v are still available.\n", conferenceTickets, remainingTickets)
-	fmt.Println("Get your tickets here to attend")
+	greetUsers(conferenceName, conferenceTickets, remainingTickets)
 
 	firstNames := []string{}
 	for {
@@ -77,4 +75,10 @@ func main() {
 			}
 		}
 	}
+}
+
+func greetUsers(confName string, confTickets int, remainingTickets uint) {
+	fmt.Printf("Welcome to %v booking application\n", confName)
+	fmt.Printf("We have total of %v tickets and %v are still available.\n", confTickets, remainingTickets)
+	fmt.Println("Get your tickets here to attend")
 }
