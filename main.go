@@ -3,6 +3,8 @@ package main
 import (
 	"booking-app/helper"
 	"fmt"
+	"sync"
+	"time"
 )
 
 var conferenceName string = "Go Conference" // := only for variables, syntax sugar
@@ -19,23 +21,25 @@ type UserData struct {
 	userTickets uint
 }
 
+var wg = sync.WaitGroup{}
+
 func main() {
 
 	greetUsers()
 
 	for {
 		firstName, lastName, email, userTickets := getUserInput()
-
-		// You can use exclamation prefix to use the negative form of this variable
-		// !isValidCity is equal to city != "Singapore" && "London"
-		// isValidCity := city == "Singapore" || "London"
-
 		isValidName, isValidEmail, isValidTicketNumber := helper.ValidateUserInput(firstName, lastName, email, userTickets, remainingTickets)
 
 		if isValidName && isValidEmail && isValidTicketNumber {
 			bookTickets(userTickets, firstName, lastName, email)
-			// use _ as a blank identifier to not cause errors of not use variable
-			// in this for loop, _ is the index of the list
+			fmt.Println("Sending tickets to the email address...")
+
+			// Add will sets the number of goroutines to wait for
+			// increases the counter by the provided number
+			wg.Add(1)
+			// using go before the function, make the function running into a go routine(concurrently)
+			go sendTickets(userTickets, firstName, lastName, email)
 			firstNames := getFirstNames()
 			fmt.Printf("The first names of bookings are: %v\n", firstNames)
 
@@ -57,6 +61,7 @@ func main() {
 			}
 		}
 	}
+	wg.Wait() // block until the wait group counter is 0
 }
 
 func greetUsers() {
@@ -66,6 +71,8 @@ func greetUsers() {
 }
 
 func getFirstNames() []string {
+	// use _ as a blank identifier to not cause errors of not use variable
+	// in this for loop, _ is the index of the list
 	firstNames := []string{}
 	for _, booking := range bookings {
 		firstNames = append(firstNames, booking.firstName)
@@ -110,4 +117,14 @@ func bookTickets(userTickets uint, firstName string, lastName string, email stri
 
 	fmt.Printf("Thank you %v %v for booking %v tickets. You will receive a confirmation email at %v\n", firstName, lastName, userTickets, email)
 	fmt.Printf("%v tickets remaining for %v\n", remainingTickets, conferenceName)
+}
+
+func sendTickets(userTickets uint, firstName string, lastName string, email string) {
+	var ticket = fmt.Sprintf("%v tickets for %v %v", userTickets, firstName, lastName)
+	time.Sleep(10 * time.Second)
+	fmt.Printf("\n######################\n")
+	fmt.Printf("Ticket sended:\n %v\nto email address %v\n", ticket, email)
+	fmt.Printf("\n######################\n")
+	// Decrements the WaitGroup counter by 1, so this is called by goroutine to indicate that's finished
+	wg.Done()
 }
